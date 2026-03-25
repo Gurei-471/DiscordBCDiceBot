@@ -141,12 +141,12 @@ createSub({
     createGroupCommand({
       type: ApplicationCommandOptionTypes.SubCommandGroup,
       name: "guild",
-      description: "サーバー設定関連のコマンドです (チャンネル管理者限定)",
+      description: "サーバー設定関連のコマンドです (管理者限定)",
       options: [
         createSubCommand({
           type: ApplicationCommandOptionTypes.SubCommand,
           name: "default_system",
-          description: "デフォルトのシステムを変更します (チャンネル管理者限定)",
+          description: "デフォルトのシステムを変更します (管理者限定)",
           options: [
             createOption({
               type: ApplicationCommandOptionTypes.String,
@@ -156,7 +156,7 @@ createSub({
             })
           ],
           async execute(interaction, options) {
-            if (interaction.guildId && !interaction.member?.permissions?.has("MANAGE_CHANNELS")) {
+            if (interaction.guildId && !interaction.member?.permissions?.has("ADMINISTRATOR")) {
               await Bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
                 type: InteractionResponseTypes.ChannelMessageWithSource,
                 data: {
@@ -210,7 +210,7 @@ createSub({
         createSubCommand({
           type: ApplicationCommandOptionTypes.SubCommand,
           name: "chat_dice_roll",
-          description: "チャットでダイスロールが可能かを変更します (チャンネル管理者限定)",
+          description: "チャットでダイスロールが可能かを変更します (管理者限定)",
           options: [
             createOption({
               type: ApplicationCommandOptionTypes.Boolean,
@@ -220,7 +220,7 @@ createSub({
             })
           ],
           async execute(interaction, options) {
-            if (interaction.guildId && !interaction.member?.permissions?.has("MANAGE_CHANNELS")) {
+            if (interaction.guildId && !interaction.member?.permissions?.has("ADMINISTRATOR")) {
               await Bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
                 type: InteractionResponseTypes.ChannelMessageWithSource,
                 data: {
@@ -333,7 +333,7 @@ createSub({
         createSubCommand({
           type: ApplicationCommandOptionTypes.SubCommand,
           name: "chat_dice_roll",
-          description: "チャットでダイスロールが可能かを変更します (チャンネル管理者限定)",
+          description: "チャットでダイスロールが可能かを変更します (チャンネル管理者 及び チャンネル作成者限定)",
           options: [
             createOption({
               type: ApplicationCommandOptionTypes.Boolean,
@@ -385,7 +385,7 @@ createSub({
         createSubCommand({
           type: ApplicationCommandOptionTypes.SubCommand,
           name: "remove",
-          description: "チャンネルの設定を削除します (チャンネル管理者限定)",
+          description: "チャンネルの設定を削除します (チャンネル管理者 及び チャンネル作成者限定)",
           async execute(interaction, options) {
             if (interaction.guildId && !(interaction.member?.permissions?.has("MANAGE_CHANNELS") || interaction.channel.ownerId == interaction.user.id)) {
               await Bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
